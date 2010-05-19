@@ -78,6 +78,15 @@ class ToXlsTest < Test::Unit::TestCase
     assert_equal document, @users.to_xls(:methods => [:is_old?])
   end
 
+  def test_with_header_names
+    document = build_document(
+    row(cell('String', 'Age [years]'), cell('String', 'Identifier'), cell('String', 'Firstname')),
+    row(cell('Number', '25'),  cell('Number', '1'),  cell('String', 'Ary')),
+    row(cell('Number', '22'),  cell('Number', '2'),  cell('String', 'Nati'))
+    )
+    assert_equal document, @users.to_xls(:header_names=>['Age [years]', 'Identifier', 'Firstname'])
+  end
+
 private
   def build_document(*rows)
     "<?xml version=\"1.0\" encoding=\"UTF-8\"?><Workbook xmlns:x=\"urn:schemas-microsoft-com:office:excel\" xmlns:ss=\"urn:schemas-microsoft-com:office:spreadsheet\" xmlns:html=\"http://www.w3.org/TR/REC-html40\" xmlns=\"urn:schemas-microsoft-com:office:spreadsheet\" xmlns:o=\"urn:schemas-microsoft-com:office:office\"><Worksheet ss:Name=\"Sheet1\"><Table>#{rows}</Table></Worksheet></Workbook>"

@@ -17,9 +17,13 @@ class Array
       if columns.any?
         unless options[:headers] == false
           output << "<Row>"
-          columns.each { |column| output << "<Cell><Data ss:Type=\"String\">#{klass.human_attribute_name(column)}</Data></Cell>" }
+          if options[:header_names]
+            options[:header_names].each { |column| output << "<Cell><Data ss:Type=\"String\">#{column}</Data></Cell>" }
+          else
+            columns.each { |column| output << "<Cell><Data ss:Type=\"String\">#{klass.human_attribute_name(column)}</Data></Cell>" }
+          end
           output << "</Row>"
-        end    
+        end
 
         self.each do |item|
           output << "<Row>"
@@ -34,4 +38,5 @@ class Array
 
     output << '</Table></Worksheet></Workbook>'
   end
+
 end
